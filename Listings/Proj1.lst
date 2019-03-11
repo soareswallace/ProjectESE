@@ -1,4 +1,4 @@
-C51 COMPILER V9.59.0.0   PROJ1                                                             02/18/2019 16:58:13 PAGE 1   
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/25/2019 16:28:31 PAGE 1   
 
 
 C51 COMPILER V9.59.0.0, COMPILATION OF MODULE PROJ1
@@ -10,150 +10,268 @@ line level    source
 
    1          #include <REG51F.H>
    2          
-   3          sbit c1 = P2^0;
-   4          sbit c2 = P2^1;
+   3          sbit c1 = P2^0; //CL
+   4          sbit c2 = P2^1; //CH
    5          
-   6          sbit p10 = P1^0;
-   7          sbit p11 = P1^1;
-   8          sbit p12 = P1^2;
-   9          sbit p13 = P1^3;
-  10          sbit p14 = P1^4;
-  11          sbit p15 = P1^5;
-  12          sbit p16 = P1^6;
-  13          sbit p17 = P1^7;
-  14          
-  15          sbit p00 = P0^0;
-  16          sbit p01 = P0^1;
-  17          sbit p02 = P0^2;
-  18          sbit p03 = P0^3;
-  19          sbit p04 = P0^4;
-  20          sbit p05 = P0^5;
-  21          sbit p06 = P0^6;
-  22          sbit p07 = P0^7;
-  23          
-  24          
-  25          main() 
-  26          {
-  27   1        while(1) 
-  28   1        {
-  29   2          if (c1)
-  30   2          {
-  31   3            p10 = p00;
-  32   3            p11 = p01;
-  33   3            p12 = p02;
-  34   3            p13 = p03;
-  35   3          }
-  36   2          else if(!c1)
-  37   2          {
-  38   3            p10 = 0;
-  39   3            p11 = 0;
-  40   3            p12 = 0;
-  41   3            p13 = 0;
-  42   3          }
-  43   2          if (c2)
-  44   2          {
-  45   3            p14 = p04;
-  46   3            p15 = p05;
-  47   3            p16 = p06;
-  48   3            p17 = p07;
-  49   3          }
-  50   2          else
-  51   2          {
-  52   3            p14 = 0;
-  53   3            p15 = 0;
-  54   3            p16 = 0;
-C51 COMPILER V9.59.0.0   PROJ1                                                             02/18/2019 16:58:13 PAGE 2   
+   6          void trocarP1L(){
+   7   1        static char estado = 2;
+   8   1        static unsigned long int cont = 0, contmax = 11500;
+   9   1        
+  10   1        switch(estado) {
+  11   2          case 0:
+  12   2            if(c1){
+  13   3              cont = 0;
+  14   3              P1 = (P1&0xF0) | (P0&0x0F);
+  15   3              estado = 1;
+  16   3              break;
+  17   3            }
+  18   2            break;
+  19   2      
+  20   2          case 1:
+  21   2            if (cont++ == contmax) {
+  22   3              estado = 2;
+  23   3              break;
+  24   3            }
+  25   2            break;
+  26   2            
+  27   2          case 2:
+  28   2            P1 = (P1&0xF0);
+  29   2            if (c1 == 0) {
+  30   3              estado = 0;
+  31   3            }
+  32   2            break;
+  33   2          
+  34   2          default:
+  35   2            estado = 2;
+  36   2            break;
+  37   2        }
+  38   1      }
+  39          
+  40          void trocarP1H(){
+  41   1        static char estado = 2;
+  42   1        static unsigned long int cont = 0, contmax = 11500;
+  43   1        
+  44   1        switch(estado) {
+  45   2          case 0:
+  46   2            if(c2){
+  47   3              cont = 0;
+  48   3              P1 = (P0&0xF0) | (P1&0x0F);
+  49   3              estado = 1;
+  50   3              break;
+  51   3            }
+  52   2            break;
+  53   2            
+  54   2          case 1:
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/25/2019 16:28:31 PAGE 2   
 
-  55   3            p17 = 0;
-  56   3          }
-  57   2          
-  58   2        }
-  59   1            
-  60   1      }
-C51 COMPILER V9.59.0.0   PROJ1                                                             02/18/2019 16:58:13 PAGE 3   
+  55   2            if (cont++ == contmax) {
+  56   3              estado = 2;
+  57   3              break;
+  58   3            }
+  59   2            break;
+  60   2            
+  61   2          case 2:
+  62   2            P1 = (P1&0x0F);
+  63   2            if (c2 == 0) {
+  64   3              estado = 0;
+  65   3            }
+  66   2            break;
+  67   2          
+  68   2          default:
+  69   2            estado = 2;
+  70   2            break;
+  71   2        }
+  72   1      }
+  73          
+  74          main()
+  75          {
+  76   1        while(1) 
+  77   1        {
+  78   2          trocarP1L();
+  79   2          trocarP1H();
+  80   2        } 
+  81   1      }
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/25/2019 16:28:31 PAGE 3   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
 
-             ; FUNCTION main (BEGIN)
+             ; FUNCTION trocarP1L (BEGIN)
+                                           ; SOURCE LINE # 6
+                                           ; SOURCE LINE # 10
+0000 E500        R     MOV     A,estado
+0002 14                DEC     A
+0003 6023              JZ      ?C0004
+0005 14                DEC     A
+0006 6035              JZ      ?C0006
+0008 2402              ADD     A,#02H
+000A 703B              JNZ     ?C0008
+                                           ; SOURCE LINE # 11
+000C         ?C0002:
+                                           ; SOURCE LINE # 12
+000C 30A03B            JNB     c1,?C0009
+                                           ; SOURCE LINE # 13
+000F E4                CLR     A
+0010 F500        R     MOV     cont+03H,A
+0012 F500        R     MOV     cont+02H,A
+0014 F500        R     MOV     cont+01H,A
+0016 F500        R     MOV     cont,A
+                                           ; SOURCE LINE # 14
+0018 E580              MOV     A,P0
+001A 540F              ANL     A,#0FH
+001C FF                MOV     R7,A
+001D E590              MOV     A,P1
+001F 54F0              ANL     A,#0F0H
+0021 4F                ORL     A,R7
+0022 F590              MOV     P1,A
+                                           ; SOURCE LINE # 15
+0024 750001      R     MOV     estado,#01H
+                                           ; SOURCE LINE # 16
+0027 22                RET     
+                                           ; SOURCE LINE # 17
+                                           ; SOURCE LINE # 18
+                                           ; SOURCE LINE # 20
+0028         ?C0004:
+                                           ; SOURCE LINE # 21
+0028 7800        R     MOV     R0,#LOW cont
+002A 120000      E     LCALL   ?C?LLDIIDATA1
+002D AB00        R     MOV     R3,contmax+03H
+002F AA00        R     MOV     R2,contmax+02H
+0031 A900        R     MOV     R1,contmax+01H
+0033 A800        R     MOV     R0,contmax
+0035 C3                CLR     C
+0036 120000      E     LCALL   ?C?ULCMP
+0039 700F              JNZ     ?C0009
+                                           ; SOURCE LINE # 22
+                                           ; SOURCE LINE # 23
+003B 800A              SJMP    ?C0022
+                                           ; SOURCE LINE # 24
                                            ; SOURCE LINE # 25
-                                           ; SOURCE LINE # 26
-0000         ?C0001:
                                            ; SOURCE LINE # 27
+003D         ?C0006:
                                            ; SOURCE LINE # 28
+003D 5390F0            ANL     P1,#0F0H
                                            ; SOURCE LINE # 29
-0000 30A012            JNB     c1,?C0003
+0040 20A007            JB      c1,?C0009
                                            ; SOURCE LINE # 30
+0043 E4                CLR     A
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/25/2019 16:28:31 PAGE 4   
+
+0044 F500        R     MOV     estado,A
                                            ; SOURCE LINE # 31
-0003 A280              MOV     C,p00
-0005 9290              MOV     p10,C
                                            ; SOURCE LINE # 32
-0007 A281              MOV     C,p01
-0009 9291              MOV     p11,C
-                                           ; SOURCE LINE # 33
-000B A282              MOV     C,p02
-000D 9292              MOV     p12,C
+0046 22                RET     
                                            ; SOURCE LINE # 34
-000F A283              MOV     C,p03
-0011 9293              MOV     p13,C
+0047         ?C0008:
                                            ; SOURCE LINE # 35
-0013 800B              SJMP    ?C0004
-0015         ?C0003:
+0047         ?C0022:
+0047 750002      R     MOV     estado,#02H
                                            ; SOURCE LINE # 36
-0015 20A008            JB      c1,?C0004
                                            ; SOURCE LINE # 37
                                            ; SOURCE LINE # 38
-0018 C290              CLR     p10
-                                           ; SOURCE LINE # 39
-001A C291              CLR     p11
+004A         ?C0009:
+004A 22                RET     
+             ; FUNCTION trocarP1L (END)
+
+             ; FUNCTION trocarP1H (BEGIN)
                                            ; SOURCE LINE # 40
-001C C292              CLR     p12
-                                           ; SOURCE LINE # 41
-001E C293              CLR     p13
-                                           ; SOURCE LINE # 42
-0020         ?C0004:
-                                           ; SOURCE LINE # 43
-0020 30A112            JNB     c2,?C0006
                                            ; SOURCE LINE # 44
+0000 E500        R     MOV     A,estado
+0002 14                DEC     A
+0003 6023              JZ      ?C0013
+0005 14                DEC     A
+0006 6035              JZ      ?C0015
+0008 2402              ADD     A,#02H
+000A 703B              JNZ     ?C0017
                                            ; SOURCE LINE # 45
-0023 A284              MOV     C,p04
-0025 9294              MOV     p14,C
+000C         ?C0011:
                                            ; SOURCE LINE # 46
-0027 A285              MOV     C,p05
-0029 9295              MOV     p15,C
+000C 30A13B            JNB     c2,?C0018
                                            ; SOURCE LINE # 47
-002B A286              MOV     C,p06
-002D 9296              MOV     p16,C
+000F E4                CLR     A
+0010 F500        R     MOV     cont+03H,A
+0012 F500        R     MOV     cont+02H,A
+0014 F500        R     MOV     cont+01H,A
+0016 F500        R     MOV     cont,A
                                            ; SOURCE LINE # 48
-002F A287              MOV     C,p07
-0031 9297              MOV     p17,C
+0018 E590              MOV     A,P1
+001A 540F              ANL     A,#0FH
+001C FF                MOV     R7,A
+001D E580              MOV     A,P0
+001F 54F0              ANL     A,#0F0H
+0021 4F                ORL     A,R7
+0022 F590              MOV     P1,A
                                            ; SOURCE LINE # 49
-0033 80CB              SJMP    ?C0001
-0035         ?C0006:
+0024 750001      R     MOV     estado,#01H
+                                           ; SOURCE LINE # 50
+0027 22                RET     
                                            ; SOURCE LINE # 51
                                            ; SOURCE LINE # 52
-0035 C294              CLR     p14
-                                           ; SOURCE LINE # 53
-C51 COMPILER V9.59.0.0   PROJ1                                                             02/18/2019 16:58:13 PAGE 4   
-
-0037 C295              CLR     p15
                                            ; SOURCE LINE # 54
-0039 C296              CLR     p16
+0028         ?C0013:
                                            ; SOURCE LINE # 55
-003B C297              CLR     p17
+0028 7800        R     MOV     R0,#LOW cont
+002A 120000      E     LCALL   ?C?LLDIIDATA1
+002D AB00        R     MOV     R3,contmax+03H
+002F AA00        R     MOV     R2,contmax+02H
+0031 A900        R     MOV     R1,contmax+01H
+0033 A800        R     MOV     R0,contmax
+0035 C3                CLR     C
+0036 120000      E     LCALL   ?C?ULCMP
+0039 700F              JNZ     ?C0018
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/25/2019 16:28:31 PAGE 5   
+
                                            ; SOURCE LINE # 56
+                                           ; SOURCE LINE # 57
+003B 800A              SJMP    ?C0023
                                            ; SOURCE LINE # 58
-003D 80C1              SJMP    ?C0001
+                                           ; SOURCE LINE # 59
+                                           ; SOURCE LINE # 61
+003D         ?C0015:
+                                           ; SOURCE LINE # 62
+003D 53900F            ANL     P1,#0FH
+                                           ; SOURCE LINE # 63
+0040 20A107            JB      c2,?C0018
+                                           ; SOURCE LINE # 64
+0043 E4                CLR     A
+0044 F500        R     MOV     estado,A
+                                           ; SOURCE LINE # 65
+                                           ; SOURCE LINE # 66
+0046 22                RET     
+                                           ; SOURCE LINE # 68
+0047         ?C0017:
+                                           ; SOURCE LINE # 69
+0047         ?C0023:
+0047 750002      R     MOV     estado,#02H
+                                           ; SOURCE LINE # 70
+                                           ; SOURCE LINE # 71
+                                           ; SOURCE LINE # 72
+004A         ?C0018:
+004A 22                RET     
+             ; FUNCTION trocarP1H (END)
+
+             ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 74
+                                           ; SOURCE LINE # 75
+0000         ?C0019:
+                                           ; SOURCE LINE # 76
+                                           ; SOURCE LINE # 77
+                                           ; SOURCE LINE # 78
+0000 120000      R     LCALL   trocarP1L
+                                           ; SOURCE LINE # 79
+0003 120000      R     LCALL   trocarP1H
+                                           ; SOURCE LINE # 80
+0006 80F8              SJMP    ?C0019
              ; FUNCTION main (END)
 
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     63    ----
+   CODE SIZE        =    158    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =     18    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

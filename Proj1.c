@@ -1,60 +1,81 @@
 #include <REG51F.H>
 
-sbit c1 = P2^0;
-sbit c2 = P2^1;
+sbit c1 = P2^0; //CL
+sbit c2 = P2^1; //CH
 
-sbit p10 = P1^0;
-sbit p11 = P1^1;
-sbit p12 = P1^2;
-sbit p13 = P1^3;
-sbit p14 = P1^4;
-sbit p15 = P1^5;
-sbit p16 = P1^6;
-sbit p17 = P1^7;
+void trocarP1L(){
+	static char estado = 2;
+	static unsigned long int cont = 0, contmax = 11500;
+	
+	switch(estado) {
+		case 0:
+			if(c1){
+				cont = 0;
+				P1 = (P1&0xF0) | (P0&0x0F);
+				estado = 1;
+				break;
+			}
+			break;
 
-sbit p00 = P0^0;
-sbit p01 = P0^1;
-sbit p02 = P0^2;
-sbit p03 = P0^3;
-sbit p04 = P0^4;
-sbit p05 = P0^5;
-sbit p06 = P0^6;
-sbit p07 = P0^7;
+		case 1:
+			if (cont++ == contmax) {
+				estado = 2;
+				break;
+			}
+			break;
+			
+		case 2:
+			P1 = (P1&0xF0);
+			if (c1 == 0) {
+				estado = 0;
+			}
+			break;
+		
+		default:
+			estado = 2;
+			break;
+	}
+}
 
+void trocarP1H(){
+	static char estado = 2;
+	static unsigned long int cont = 0, contmax = 11500;
+	
+	switch(estado) {
+		case 0:
+			if(c2){
+				cont = 0;
+				P1 = (P0&0xF0) | (P1&0x0F);
+				estado = 1;
+				break;
+			}
+			break;
+			
+		case 1:
+			if (cont++ == contmax) {
+				estado = 2;
+				break;
+			}
+			break;
+			
+		case 2:
+			P1 = (P1&0x0F);
+			if (c2 == 0) {
+				estado = 0;
+			}
+			break;
+		
+		default:
+			estado = 2;
+			break;
+	}
+}
 
-main() 
+main()
 {
 	while(1) 
 	{
-		if (c1)
-		{
-			p10 = p00;
-			p11 = p01;
-			p12 = p02;
-			p13 = p03;
-		}
-		else if(!c1)
-		{
-			p10 = 0;
-			p11 = 0;
-			p12 = 0;
-			p13 = 0;
-		}
-		if (c2)
-		{
-			p14 = p04;
-			p15 = p05;
-			p16 = p06;
-			p17 = p07;
-		}
-		else
-		{
-			p14 = 0;
-			p15 = 0;
-			p16 = 0;
-			p17 = 0;
-		}
-		
-	}
-			
+		trocarP1L();
+		trocarP1H();
+	}	
 }
