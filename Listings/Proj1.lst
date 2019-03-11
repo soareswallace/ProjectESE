@@ -1,0 +1,162 @@
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/18/2019 16:58:13 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE PROJ1
+OBJECT MODULE PLACED IN .\Objects\Proj1.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Proj1.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND CODE PRINT(.\Listing
+                    -s\Proj1.lst) TABS(2) OBJECT(.\Objects\Proj1.obj)
+
+line level    source
+
+   1          #include <REG51F.H>
+   2          
+   3          sbit c1 = P2^0;
+   4          sbit c2 = P2^1;
+   5          
+   6          sbit p10 = P1^0;
+   7          sbit p11 = P1^1;
+   8          sbit p12 = P1^2;
+   9          sbit p13 = P1^3;
+  10          sbit p14 = P1^4;
+  11          sbit p15 = P1^5;
+  12          sbit p16 = P1^6;
+  13          sbit p17 = P1^7;
+  14          
+  15          sbit p00 = P0^0;
+  16          sbit p01 = P0^1;
+  17          sbit p02 = P0^2;
+  18          sbit p03 = P0^3;
+  19          sbit p04 = P0^4;
+  20          sbit p05 = P0^5;
+  21          sbit p06 = P0^6;
+  22          sbit p07 = P0^7;
+  23          
+  24          
+  25          main() 
+  26          {
+  27   1        while(1) 
+  28   1        {
+  29   2          if (c1)
+  30   2          {
+  31   3            p10 = p00;
+  32   3            p11 = p01;
+  33   3            p12 = p02;
+  34   3            p13 = p03;
+  35   3          }
+  36   2          else if(!c1)
+  37   2          {
+  38   3            p10 = 0;
+  39   3            p11 = 0;
+  40   3            p12 = 0;
+  41   3            p13 = 0;
+  42   3          }
+  43   2          if (c2)
+  44   2          {
+  45   3            p14 = p04;
+  46   3            p15 = p05;
+  47   3            p16 = p06;
+  48   3            p17 = p07;
+  49   3          }
+  50   2          else
+  51   2          {
+  52   3            p14 = 0;
+  53   3            p15 = 0;
+  54   3            p16 = 0;
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/18/2019 16:58:13 PAGE 2   
+
+  55   3            p17 = 0;
+  56   3          }
+  57   2          
+  58   2        }
+  59   1            
+  60   1      }
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/18/2019 16:58:13 PAGE 3   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 25
+                                           ; SOURCE LINE # 26
+0000         ?C0001:
+                                           ; SOURCE LINE # 27
+                                           ; SOURCE LINE # 28
+                                           ; SOURCE LINE # 29
+0000 30A012            JNB     c1,?C0003
+                                           ; SOURCE LINE # 30
+                                           ; SOURCE LINE # 31
+0003 A280              MOV     C,p00
+0005 9290              MOV     p10,C
+                                           ; SOURCE LINE # 32
+0007 A281              MOV     C,p01
+0009 9291              MOV     p11,C
+                                           ; SOURCE LINE # 33
+000B A282              MOV     C,p02
+000D 9292              MOV     p12,C
+                                           ; SOURCE LINE # 34
+000F A283              MOV     C,p03
+0011 9293              MOV     p13,C
+                                           ; SOURCE LINE # 35
+0013 800B              SJMP    ?C0004
+0015         ?C0003:
+                                           ; SOURCE LINE # 36
+0015 20A008            JB      c1,?C0004
+                                           ; SOURCE LINE # 37
+                                           ; SOURCE LINE # 38
+0018 C290              CLR     p10
+                                           ; SOURCE LINE # 39
+001A C291              CLR     p11
+                                           ; SOURCE LINE # 40
+001C C292              CLR     p12
+                                           ; SOURCE LINE # 41
+001E C293              CLR     p13
+                                           ; SOURCE LINE # 42
+0020         ?C0004:
+                                           ; SOURCE LINE # 43
+0020 30A112            JNB     c2,?C0006
+                                           ; SOURCE LINE # 44
+                                           ; SOURCE LINE # 45
+0023 A284              MOV     C,p04
+0025 9294              MOV     p14,C
+                                           ; SOURCE LINE # 46
+0027 A285              MOV     C,p05
+0029 9295              MOV     p15,C
+                                           ; SOURCE LINE # 47
+002B A286              MOV     C,p06
+002D 9296              MOV     p16,C
+                                           ; SOURCE LINE # 48
+002F A287              MOV     C,p07
+0031 9297              MOV     p17,C
+                                           ; SOURCE LINE # 49
+0033 80CB              SJMP    ?C0001
+0035         ?C0006:
+                                           ; SOURCE LINE # 51
+                                           ; SOURCE LINE # 52
+0035 C294              CLR     p14
+                                           ; SOURCE LINE # 53
+C51 COMPILER V9.59.0.0   PROJ1                                                             02/18/2019 16:58:13 PAGE 4   
+
+0037 C295              CLR     p15
+                                           ; SOURCE LINE # 54
+0039 C296              CLR     p16
+                                           ; SOURCE LINE # 55
+003B C297              CLR     p17
+                                           ; SOURCE LINE # 56
+                                           ; SOURCE LINE # 58
+003D 80C1              SJMP    ?C0001
+             ; FUNCTION main (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     63    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
