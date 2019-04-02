@@ -155,7 +155,7 @@
             <CpuDllArguments></CpuDllArguments>
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
-            <InitializationFile></InitializationFile>
+            <InitializationFile>.\conf.txt</InitializationFile>
           </SimDlls>
           <TargetDlls>
             <CpuDll></CpuDll>
@@ -382,9 +382,9 @@
               <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
-              <FileName>interface_serial.c</FileName>
+              <FileName>proj5.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\interface_serial.c</FilePath>
+              <FilePath>.\proj5.c</FilePath>
             </File>
           </Files>
         </Group>

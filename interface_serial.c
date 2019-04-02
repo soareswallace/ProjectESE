@@ -6,7 +6,6 @@
 #define BAUDRATE ((2^(SMOD1)/32)*(FREQCLK/(12*(256 - TH1_VALUE))))
 #define TAM_BUFFER 20
 
-char mensagem[TAM_BUFFER]="";
 unsigned int i = 0;
 unsigned int j = 0;
 
@@ -18,7 +17,6 @@ void main() {
 	serial1_inicializa();
 	EA = 1;													//Habilita tratamento de interupções
 	ES = 1;													//Habilita as interrupções da serial
-	TI = 1;													//Começa o envio da string
 	while(1);
 }
 
@@ -36,20 +34,13 @@ void serial1_inicializa(){
 }
 
 void serial_isr (void) interrupt 4 using 2{
+	unsigned char c;
 	if(TI){													//Verifica se a interrupção é de transmissão
 		TI = 0;
-		i++;
-		if (i > strlen(mensagem)){		//Verifica se ainda há dados para enviar
-			i=0;
-		}
-		SBUF = mensagem[i - 1];				//Escreve no registrador SBUF de tranmissão
 	}	
 	if(RI){													//Verifica se a interrupção é de recepção
 		RI = 0;
-		j++;
-		if (j > TAM_BUFFER){					//Verifica se terminou a leitura do Buffer
-			j=0;
-		}
-		mensagem[j - 1] = SBUF + 1;		//Lê do registrador SBUF de tranmissão 
+		c = SBUF;
+		SBUF = c + 1;		//Lê do registrador SBUF de tranmissão 
 	}
 }
