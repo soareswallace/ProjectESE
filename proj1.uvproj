@@ -382,9 +382,9 @@
               <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
-              <FileName>Proj1.c</FileName>
+              <FileName>interface_serial.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\Proj1.c</FilePath>
+              <FilePath>.\interface_serial.c</FilePath>
             </File>
           </Files>
         </Group>

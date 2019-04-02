@@ -1,9 +1,9 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    03/11/2019  16:51:49  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    03/18/2019  16:13:37  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
-C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\Proj1.obj TO .\Objects\proj1 PRINT (.\Listings\proj1.m51) R
->> AMSIZE (256)
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\interface_serial.obj TO .\Objects\proj1 PRINT (.\Listings\p
+>> roj1.m51) RAMSIZE (256)
 
 
 MEMORY MODEL: SMALL
@@ -11,8 +11,10 @@ MEMORY MODEL: SMALL
 
 INPUT MODULES INCLUDED:
   .\Objects\STARTUP.obj (?C_STARTUP)
-  .\Objects\Proj1.obj (PROJ1)
+  .\Objects\interface_serial.obj (INTERFACE_SERIAL)
   C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (STRLEN)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDPTR)
 
 
 LINK MAP OF MODULE:  .\Objects\proj1 (?C_STARTUP)
@@ -23,21 +25,24 @@ LINK MAP OF MODULE:  .\Objects\proj1 (?C_STARTUP)
 
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
-            DATA    0008H     0006H     UNIT         ?DT?PROJ1
-            IDATA   000EH     0001H     UNIT         ?STACK
+                    0008H     0008H                  *** GAP ***
+            REG     0010H     0008H     ABSOLUTE     "REG BANK 2"
+            DATA    0018H     0018H     UNIT         ?DT?INTERFACE_SERIAL
+            IDATA   0030H     0001H     UNIT         ?STACK
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
-                    0003H     0008H                  *** GAP ***
-            CODE    000BH     0003H     ABSOLUTE     
-                    000EH     07F2H                  *** GAP ***
+                    0003H     0020H                  *** GAP ***
+            CODE    0023H     0003H     ABSOLUTE     
+                    0026H     07DAH                  *** GAP ***
             CODE    0800H     008CH     UNIT         ?C_C51STARTUP
-            CODE    088CH     004FH     UNIT         ?PR?TIMER0_INT?PROJ1
-            CODE    08DBH     0035H     UNIT         ?PR?TROCARP1L?PROJ1
-            CODE    0910H     0035H     UNIT         ?PR?TROCARP1H?PROJ1
-            CODE    0945H     0018H     UNIT         ?PR?TIMER0_INICIALIZA?PROJ1
-            CODE    095DH     000FH     UNIT         ?PR?MAIN?PROJ1
-            CODE    096CH     000FH     UNIT         ?C_INITSEG
+            CODE    088CH     006CH     UNIT         ?PR?SERIAL_ISR?INTERFACE_SERIAL
+            CODE    08F8H     001FH     UNIT         ?C_INITSEG
+            CODE    0917H     0019H     UNIT         ?C?LIB_CODE
+            CODE    0930H     0015H     UNIT         ?PR?_STRLEN?STRLEN
+            CODE    0945H     0013H     UNIT         ?PR?SERIAL1_INICIALIZA?INTERFACE_SERIAL
+            CODE    0958H     0010H     UNIT         ?PR?TIMER1_INICIALIZA?INTERFACE_SERIAL
+            CODE    0968H     000EH     UNIT         ?PR?MAIN?INTERFACE_SERIAL
 
 
 
@@ -48,27 +53,31 @@ SEGMENT
   +--> CALLED SEGMENT
 ---------------------
 ?C_C51STARTUP
-  +--> ?PR?MAIN?PROJ1
+  +--> ?PR?MAIN?INTERFACE_SERIAL
   +--> ?C_INITSEG
 
-?PR?MAIN?PROJ1
-  +--> ?PR?TIMER0_INICIALIZA?PROJ1
-  +--> ?PR?TROCARP1L?PROJ1
-  +--> ?PR?TROCARP1H?PROJ1
+?PR?MAIN?INTERFACE_SERIAL
+  +--> ?PR?TIMER1_INICIALIZA?INTERFACE_SERIAL
+  +--> ?PR?SERIAL1_INICIALIZA?INTERFACE_SERIAL
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/18/2019  16:13:37  PAGE 2
+
+
+
+*** NEW ROOT ***************************************************
+
+?PR?SERIAL_ISR?INTERFACE_SERIAL
+  +--> ?PR?_STRLEN?STRLEN
 
 
 
 SYMBOL TABLE OF MODULE:  .\Objects\proj1 (?C_STARTUP)
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/11/2019  16:51:49  PAGE 2
-
-
 
   VALUE           TYPE          NAME
   ----------------------------------
 
   -------         MODULE        ?C_STARTUP
   C:0800H         SEGMENT       ?C_C51STARTUP
-  I:000EH         SEGMENT       ?STACK
+  I:0030H         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
   D:00F0H         SYMBOL        B
@@ -100,136 +109,89 @@ SYMBOL TABLE OF MODULE:  .\Objects\proj1 (?C_STARTUP)
   C:0809H         LINE#         196
   -------         ENDMOD        ?C_STARTUP
 
-  -------         MODULE        PROJ1
+  -------         MODULE        INTERFACE_SERIAL
   C:0000H         SYMBOL        _ICE_DUMMY_
-  D:0080H         PUBLIC        P0
-  D:0090H         PUBLIC        P1
-  C:088CH         PUBLIC        timer0_int
-  D:00A0H         PUBLIC        P2
   B:00A8H.7       PUBLIC        EA
-  B:00A0H.0       PUBLIC        c1
-  B:00A0H.1       PUBLIC        c2
-  B:00D0H.7       PUBLIC        CY
-  C:095DH         PUBLIC        main
+  B:00A8H.4       PUBLIC        ES
+  B:0098H.0       PUBLIC        RI
+  B:0098H.1       PUBLIC        TI
+  C:0968H         PUBLIC        main
+  D:0099H         PUBLIC        SBUF
+  D:0087H         PUBLIC        PCON
+  C:088CH         PUBLIC        serial_isr
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/18/2019  16:13:37  PAGE 3
+
+
+  D:0098H         PUBLIC        SCON
   D:0089H         PUBLIC        TMOD
-  B:00A8H.1       PUBLIC        ET0
-  D:008CH         PUBLIC        TH0
-  D:008AH         PUBLIC        TL0
-  B:0088H.4       PUBLIC        TR0
-  C:0910H         PUBLIC        trocarP1H
-  C:0945H         PUBLIC        timer0_inicializa
-  C:08DBH         PUBLIC        trocarP1L
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/11/2019  16:51:49  PAGE 3
-
-
-  D:000AH         PUBLIC        cont_P1H
-  D:000CH         PUBLIC        cont_P1L
-  -------         PROC          TIMER0_INT
-  C:088CH         LINE#         13
-  C:0890H         LINE#         14
-  C:0892H         LINE#         15
-  C:0898H         LINE#         16
-  C:089EH         LINE#         17
-  C:08A0H         LINE#         19
-  C:08ABH         LINE#         20
-  C:08B1H         LINE#         21
-  C:08B3H         LINE#         22
-  C:08BBH         LINE#         23
-  C:08BBH         LINE#         24
-  C:08C6H         LINE#         25
-  C:08CCH         LINE#         26
-  C:08CEH         LINE#         27
-  C:08D6H         LINE#         28
-  C:08D6H         LINE#         29
-  -------         ENDPROC       TIMER0_INT
-  -------         PROC          TIMER0_INICIALIZA
-  C:0945H         LINE#         31
-  C:0945H         LINE#         32
-  C:0947H         LINE#         33
-  C:094FH         LINE#         34
-  C:0952H         LINE#         35
-  C:0958H         LINE#         36
-  C:095AH         LINE#         37
-  C:095CH         LINE#         38
-  -------         ENDPROC       TIMER0_INICIALIZA
-  -------         PROC          TROCARP1L
-  -------         DO            
-  D:0008H         SYMBOL        estado
-  -------         ENDDO         
-  C:08DBH         LINE#         43
-  C:08DBH         LINE#         46
-  C:08E7H         LINE#         47
-  C:08E7H         LINE#         48
-  C:08EAH         LINE#         49
-  C:08F6H         LINE#         50
-  C:08F9H         LINE#         51
-  C:08FAH         LINE#         52
-  C:08FAH         LINE#         53
-  C:08FAH         LINE#         55
-  C:08FAH         LINE#         56
-  C:0900H         LINE#         57
-  C:0900H         LINE#         58
-  C:0900H         LINE#         59
-  C:0902H         LINE#         61
-  C:0902H         LINE#         62
-  C:0905H         LINE#         63
-  C:0908H         LINE#         64
-  C:090BH         LINE#         65
-  C:090BH         LINE#         66
-  C:090CH         LINE#         68
-  C:090CH         LINE#         69
-  C:090FH         LINE#         70
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/11/2019  16:51:49  PAGE 4
-
-
-  C:090FH         LINE#         71
-  C:090FH         LINE#         72
-  -------         ENDPROC       TROCARP1L
-  -------         PROC          TROCARP1H
-  -------         DO            
-  D:0009H         SYMBOL        estado
-  -------         ENDDO         
-  C:0910H         LINE#         74
-  C:0910H         LINE#         77
-  C:091CH         LINE#         78
-  C:091CH         LINE#         79
-  C:091FH         LINE#         80
-  C:092BH         LINE#         81
-  C:092EH         LINE#         82
-  C:092FH         LINE#         83
-  C:092FH         LINE#         84
-  C:092FH         LINE#         86
-  C:092FH         LINE#         87
-  C:0935H         LINE#         88
-  C:0935H         LINE#         89
-  C:0935H         LINE#         90
-  C:0937H         LINE#         92
-  C:0937H         LINE#         93
-  C:093AH         LINE#         94
-  C:093DH         LINE#         95
-  C:0940H         LINE#         96
-  C:0940H         LINE#         97
-  C:0941H         LINE#         99
-  C:0941H         LINE#         100
-  C:0944H         LINE#         101
-  C:0944H         LINE#         102
-  C:0944H         LINE#         103
-  -------         ENDPROC       TROCARP1H
+  C:0945H         PUBLIC        serial1_inicializa
+  D:008DH         PUBLIC        TH1
+  D:0018H         PUBLIC        mensagem
+  B:0088H.6       PUBLIC        TR1
+  C:0958H         PUBLIC        timer1_inicializa
+  B:0098H.4       PUBLIC        REN
+  D:002CH         PUBLIC        i
+  D:002EH         PUBLIC        j
   -------         PROC          MAIN
-  C:095DH         LINE#         105
-  C:095DH         LINE#         106
-  C:095FH         LINE#         108
-  C:0962H         LINE#         110
-  C:0964H         LINE#         119
-  C:0964H         LINE#         120
-  C:0967H         LINE#         121
-  C:096AH         LINE#         122
+  C:0968H         LINE#         16
+  C:0968H         LINE#         17
+  C:096BH         LINE#         18
+  C:096EH         LINE#         19
+  C:0970H         LINE#         20
+  C:0972H         LINE#         21
+  C:0974H         LINE#         22
   -------         ENDPROC       MAIN
-  -------         ENDMOD        PROJ1
+  -------         PROC          TIMER1_INICIALIZA
+  C:0958H         LINE#         25
+  C:0958H         LINE#         26
+  C:095AH         LINE#         27
+  C:0962H         LINE#         28
+  C:0965H         LINE#         29
+  C:0967H         LINE#         30
+  -------         ENDPROC       TIMER1_INICIALIZA
+  -------         PROC          SERIAL1_INICIALIZA
+  C:0945H         LINE#         32
+  C:0945H         LINE#         33
+  C:094DH         LINE#         34
+  C:0955H         LINE#         35
+  C:0957H         LINE#         36
+  -------         ENDPROC       SERIAL1_INICIALIZA
+  -------         PROC          SERIAL_ISR
+  C:088CH         LINE#         38
+  C:0899H         LINE#         39
+  C:089CH         LINE#         40
+  C:089EH         LINE#         41
+  C:08A6H         LINE#         42
+  C:08B8H         LINE#         43
+  C:08BEH         LINE#         44
+  C:08BEH         LINE#         45
+  C:08C6H         LINE#         46
+  C:08C6H         LINE#         47
+  C:08C9H         LINE#         48
+  C:08CBH         LINE#         49
+  C:08D3H         LINE#         50
+  C:08DCH         LINE#         51
+  C:08E2H         LINE#         52
+  C:08E2H         LINE#         53
+  C:08EDH         LINE#         54
+  C:08EDH         LINE#         55
+  -------         ENDPROC       SERIAL_ISR
+  -------         ENDMOD        INTERFACE_SERIAL
+
+  -------         MODULE        STRLEN
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  03/18/2019  16:13:37  PAGE 4
+
+
+  C:0930H         PUBLIC        _STRLEN
+  -------         ENDMOD        STRLEN
+
+  -------         MODULE        ?C?CLDPTR
+  C:0917H         PUBLIC        ?C?CLDPTR
+  -------         ENDMOD        ?C?CLDPTR
 
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0100H BYTE (12%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 00CDH BYTE (10%) *
 ******************************************************************************
 
-Program Size: data=15.0 xdata=0 code=385
+Program Size: data=41.0 xdata=0 code=380
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
