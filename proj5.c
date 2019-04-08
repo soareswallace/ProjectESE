@@ -4,26 +4,31 @@
 
 
 #include <REG517A.H>
-
 #include <string.h>
 
 #define FREQCLK 12000000
+#define CORRECAO 7
+#define FreqTimer0_emHz 100
 #define TH1_VALUE 204		//Para Boundrate = 1200bps
 #define BAUDRATE ((2^(SMOD1)/32)*(FREQCLK/(12*(256 - TH1_VALUE))))
 #define TAM_BUFFER 16
-#define CARACTER_FINAL = ' ';
+#define VALOR_TH0 ((65536 - (FREQCLK / (12 * FreqTimer0_emHz)) + CORRECAO) >>8)			// >>8 é um shift (deslocamento binário) de 8 posições para direita
+#define VALOR_TL0 ((65536 - (FREQCLK / (12 * FreqTimer0_emHz)) + CORRECAO) & 0xFF)
 
 char buffer_circular_transm[16];  
 char buffer_circular_recept[16]; 
+
+unsigned short int cont_LED = 0;
+
 
 unsigned int IN_REC = 0;
 unsigned int IN_TRANS = 0;
 unsigned int OUT_REC = 0;
 unsigned int OUT_TRANS = 0;
-
 unsigned int TX_OCUPADO;
 
 
+void timer0_inicializa();
 void timer1_inicializa();
 void serial1_inicializa();
 void sendChar(char c);
@@ -38,8 +43,8 @@ int readThisChar;
 void main() {	
 	timer1_inicializa();
 	serial1_inicializa();
-	EAL = 1;													//Habilita tratamento de interupÃ§Ãµes
-	ES0 = 1;													//Habilita as interrupÃ§Ãµes da serial
+	EAL = 1;													//Habilita tratamento de interupções
+	ES0 = 1;													//Habilita as interrupções da serial
 	if (bufferVazio(IN_REC, OUT_REC)) {
 		while(1){
 			unsigned char c;
@@ -47,6 +52,16 @@ void main() {
 			sendChar(c);
 		}
 	}
+}
+
+void timer0_inicializa() {
+	TR0 = 0;											// Desliga Timer0
+	TMOD = (TMOD & 0xF0) | 0x01;	// Timer 0 programado como timer de 16 bits
+	TL0 = VALOR_TL0;
+	TH0 = VALOR_TH0 + (unsigned char) CY;							// Programa contagem do Timer0
+	ET0 = 1;																	// Habilita interrupcao do timer 0
+	TR0 = 1;			// Habilita contagem do timer 0
+	P4 = 0X00;
 }
 
 void timer1_inicializa() {
@@ -58,12 +73,26 @@ void timer1_inicializa() {
 
 void serial1_inicializa() {
 	S0CON = (S0CON & 0x3F) | 0x40;		//01000000 em Decimal - Definindo SM0 e SM1 como 01 (Serial no Modo 01)
-	PCON = (PCON & 0x7F) | 0x80;		//SMOD com valor 01 na fÃ³rmula do Baundrate
-	REN0 = 1;												//Habilita a recepÃ§Ã£o
+	PCON = (PCON & 0x7F) | 0x80;		//SMOD com valor 01 na fórmula do Baundrate
+	REN0 = 1;												//Habilita a recepção
+}
+
+void timer0_int (void) interrupt 1 using 2{ // dispositivo associado é 1 (timer0) no vetor de interrupção
+	TR0 = 0;							// Desliga Timer0
+	TH0 += VALOR_TH0;			// Programa contagem do Timer0 (já considera possíveis alterações)
+	TL0 += VALOR_TL0;
+	TR0 = 1;							// Habilita contagem do timer 0
+	
+	if(cont_LED >= 100){
+		cont_LED = 0;
+		P4 = ~P4;
+	}	else{
+		cont_LED++;
+	}
 }
 
 void serial_isr (void) interrupt 4 using 2 {
-	if(TI0){													//Verifica se a interrupÃ§Ã£o Ã© de transmissÃ£o
+	if(TI0){													//Verifica se a interrupção é de transmissão
 		TI0 = 0;
 		if (IN_TRANS != OUT_TRANS) {
 			if (OUT_TRANS + 1 > 0x0F) {
@@ -80,7 +109,7 @@ void serial_isr (void) interrupt 4 using 2 {
 		TX_OCUPADO = 0;
 	}	
 	
-	if(RI0) {													//Verifica se a interrupÃ§Ã£o Ã© de recepÃ§Ã£o
+	if(RI0) {													//Verifica se a interrupção é de recepção
 		RI0 = 0;
 		incomingChar = 1;
 		if((IN_REC <= 0x0F) && (IN_REC + 1 != OUT_REC)){
@@ -118,7 +147,7 @@ void sendChar(char c){ // unico q coloca caracteres no buffer de transmissao
 		
 		if (!TX_OCUPADO) {
 			TX_OCUPADO = 1;
-			TI0 = 1; // chamar a interrupÃ§Ã£o
+			TI0 = 1; // chamar a interrupção
 		}
 	}	
 }
