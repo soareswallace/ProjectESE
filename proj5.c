@@ -1,9 +1,10 @@
-// VAZIO: in == out
+	// VAZIO: in == out
 // CHEIO: (in + 1) % TAM_BUFFER == out
 // SE TAM_BUFFER FOR POTENCIA DE 2: (in +1)&0x0F == out    
 
 
-#include <REG51.H>
+#include <REG517A.H>
+
 #include <string.h>
 
 #define FREQCLK 12000000
@@ -37,8 +38,8 @@ int readThisChar;
 void main() {	
 	timer1_inicializa();
 	serial1_inicializa();
-	EA = 1;													//Habilita tratamento de interupções
-	ES = 1;													//Habilita as interrupções da serial
+	EAL = 1;													//Habilita tratamento de interupÃ§Ãµes
+	ES0 = 1;													//Habilita as interrupÃ§Ãµes da serial
 	if (bufferVazio(IN_REC, OUT_REC)) {
 		while(1){
 			unsigned char c;
@@ -56,22 +57,22 @@ void timer1_inicializa() {
 }
 
 void serial1_inicializa() {
-	SCON = (SCON & 0x3F) | 0x40;		//01000000 em Decimal - Definindo SM0 e SM1 como 01 (Serial no Modo 01)
-	PCON = (PCON & 0x7F) | 0x80;		//SMOD com valor 01 na fórmula do Baundrate
-	REN = 1;												//Habilita a recepção
+	S0CON = (S0CON & 0x3F) | 0x40;		//01000000 em Decimal - Definindo SM0 e SM1 como 01 (Serial no Modo 01)
+	PCON = (PCON & 0x7F) | 0x80;		//SMOD com valor 01 na fÃ³rmula do Baundrate
+	REN0 = 1;												//Habilita a recepÃ§Ã£o
 }
 
 void serial_isr (void) interrupt 4 using 2 {
-	if(TI){													//Verifica se a interrupção é de transmissão
-		TI = 0;
+	if(TI0){													//Verifica se a interrupÃ§Ã£o Ã© de transmissÃ£o
+		TI0 = 0;
 		if (IN_TRANS != OUT_TRANS) {
 			if (OUT_TRANS + 1 > 0x0F) {
 				OUT_TRANS = 0;
-				SBUF = buffer_circular_transm[OUT_TRANS];
+				S0BUF = buffer_circular_transm[OUT_TRANS];
 				OUT_TRANS++;
      	}
 			else {
-				SBUF = buffer_circular_transm[OUT_TRANS];
+				S0BUF = buffer_circular_transm[OUT_TRANS];
 				OUT_TRANS++;
      	}
     }
@@ -79,19 +80,19 @@ void serial_isr (void) interrupt 4 using 2 {
 		TX_OCUPADO = 0;
 	}	
 	
-	if(RI) {													//Verifica se a interrupção é de recepção
-		RI = 0;
+	if(RI0) {													//Verifica se a interrupÃ§Ã£o Ã© de recepÃ§Ã£o
+		RI0 = 0;
 		incomingChar = 1;
 		if((IN_REC <= 0x0F) && (IN_REC + 1 != OUT_REC)){
 			if (IN_REC + 1 > 0x0F) {
 				if (OUT_REC > 0) {
 					IN_REC = 0;
-					buffer_circular_recept[IN_REC] = SBUF + 1;
+					buffer_circular_recept[IN_REC] = S0BUF + 1;
 					IN_REC++;
 				}
 			}
 			else {
-				buffer_circular_recept[IN_REC] = SBUF + 1;
+				buffer_circular_recept[IN_REC] = S0BUF + 1;
 				IN_REC++;
 			}
 		}
@@ -117,7 +118,7 @@ void sendChar(char c){ // unico q coloca caracteres no buffer de transmissao
 		
 		if (!TX_OCUPADO) {
 			TX_OCUPADO = 1;
-			TI = 1; // chamar a interrupção
+			TI0 = 1; // chamar a interrupÃ§Ã£o
 		}
 	}	
 }
