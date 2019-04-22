@@ -28,11 +28,11 @@ void serial_isr (void) interrupt 4 using 2 {
 		if(S0BUF > 47 &&  S0BUF < 58){
 			light = S0BUF - 48;
 			CMH0 = 0xFF - 25*light;
-			CMH1 = 0xFF - 25*light;
-			CMH2 = 0xFF - 25*light;
-			CMH3 = 0xFF - 25*light;
-			CMH4 = 0xFF - 25*light;
-			CMH5 = 0xFF - 25*light;
+			CMH1 = 0xFF - 25*light; //25 eh porque eu dividi minha luminosidade em 10 niveis
+			CMH2 = 0xFF - 25*light; //9 seria o nivel maximo, pois eu nao vou diminuir a luminosidade de forma alguma
+			CMH3 = 0xFF - 25*light; //0 seria a luminosidade minima, pois ai eu diminuo ao nivel maximo a luminosidade
+			CMH4 = 0xFF - 25*light; //0 luz maxima
+			CMH5 = 0xFF - 25*light; // 255 - 25 * 9(que vem do input) luminosidade maxima
 			CMH6 = 0xFF - 25*light;
 			CMH7 = 0xFF - 25*light;
 			
@@ -44,7 +44,6 @@ void serial_isr (void) interrupt 4 using 2 {
 			CML5 = 0xFF - 25*light;
 			CML6 = 0xFF - 25*light;
 			CML7 = 0xFF - 25*light;
-			
 		}
 	}
 }
