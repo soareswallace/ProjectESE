@@ -182,6 +182,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>OUT_REC</ItemText>
         </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>prop</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>

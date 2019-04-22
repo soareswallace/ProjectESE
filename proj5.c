@@ -2,7 +2,7 @@
 
 #define TH1_VALUE 204		//Para Baudrate = 1200bps
 
-unsigned int prop = 0;
+unsigned int light = 0;
 
 void timer1_inicializa() {
 	TR1 = 0;												//Desliga o Timer 01
@@ -26,17 +26,25 @@ void serial_isr (void) interrupt 4 using 2 {
 	if(RI0) {													//Verifica se a interrupção é de recepção
 		RI0 = 0;
 		if(S0BUF > 47 &&  S0BUF < 58){
-			prop = S0BUF - 48;
-			prop = prop * 7281;
-			prop = ~prop;
-			CM0 = prop;
-			CM1 = prop;
-			CM2 = prop;
-			CM3 = prop;
-			CM4 = prop;
-			CM5 = prop;
-			CM6 = prop;
-			CM7 = prop;
+			light = S0BUF - 48;
+			CMH0 = 0xFF - 25*light;
+			CMH1 = 0xFF - 25*light;
+			CMH2 = 0xFF - 25*light;
+			CMH3 = 0xFF - 25*light;
+			CMH4 = 0xFF - 25*light;
+			CMH5 = 0xFF - 25*light;
+			CMH6 = 0xFF - 25*light;
+			CMH7 = 0xFF - 25*light;
+			
+			CML0 = 0xFF - 25*light;
+			CML1 = 0xFF - 25*light;
+			CML2 = 0xFF - 25*light;
+			CML3 = 0xFF - 25*light;
+			CML4 = 0xFF - 25*light;
+			CML5 = 0xFF - 25*light;
+			CML6 = 0xFF - 25*light;
+			CML7 = 0xFF - 25*light;
+			
 		}
 	}
 }
