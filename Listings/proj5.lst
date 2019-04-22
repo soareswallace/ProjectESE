@@ -1,0 +1,233 @@
+C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 17:23:02 PAGE 1   
+
+
+C51 COMPILER V9.59.0.0, COMPILATION OF MODULE PROJ5
+OBJECT MODULE PLACED IN .\Objects\proj5.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE proj5.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND CODE PRINT(.\Listing
+                    -s\proj5.lst) TABS(2) OBJECT(.\Objects\proj5.obj)
+
+line level    source
+
+   1          #include <REG517A.H>
+   2          
+   3          #define TH1_VALUE 204   //Para Baudrate = 1200bps
+   4          
+   5          unsigned int prop = 0;
+   6          
+   7          void timer1_inicializa() {
+   8   1        TR1 = 0;                        //Desliga o Timer 01
+   9   1        TMOD = (TMOD & 0x0F) | 0x20;    //Coloca o Timer 01 no Modo 2
+  10   1        TH1 = TH1_VALUE;                //Atribui o valor de reload
+  11   1        TR1 = 1;                        //Liga o Timer 01
+  12   1      }
+  13          
+  14          void serial1_inicializa() {
+  15   1        SM0 = 0;
+  16   1        SM1 = 1;
+  17   1        EAL = 1;                          //Habilita tratamento de interupções
+  18   1        ES0 = 1;                          //Habilita as interrupções da serial
+  19   1        S0CON = (S0CON & 0x0F) | 0x70;    //01010000 em Decimal - Definindo SM0 e SM1 como 01 (Serial no Modo 01)
+  20   1        PCON = (PCON & 0x7F) | 0x80;    //SMOD com valor 01 na fórmula do Baundrate
+  21   1        REN0 = 1;                       //Habilita a recepção
+  22   1      }
+  23          
+  24          void serial_isr (void) interrupt 4 using 2 {
+  25   1        
+  26   1        if(RI0) {                         //Verifica se a interrupção é de recepção
+  27   2          RI0 = 0;
+  28   2          if(S0BUF > 47 &&  S0BUF < 58){
+  29   3            prop = S0BUF - 48;
+  30   3            //prop = prop * 7281;
+  31   3            prop = ~prop;
+  32   3            CM0 = prop;
+  33   3            CM1 = prop;
+  34   3            CM2 = prop;
+  35   3            CM3 = prop;
+  36   3            CM4 = prop;
+  37   3            CM5 = prop;
+  38   3            CM6 = prop;
+  39   3            CM7 = prop;
+  40   3          }
+  41   2        }
+  42   1      }
+  43          
+  44          void pwm_start() {
+  45   1        CMSEL = (CMSEL | 0xFF);
+  46   1        CMEN = (CMEN | 0xFF);
+  47   1        CTRELL = 0xFF;
+  48   1        CTRELH = 0xFF;
+  49   1        CTCON = (CTCON & 0xF8);
+  50   1      }
+  51          
+  52          void main() { 
+  53   1        timer1_inicializa();
+  54   1        serial1_inicializa();
+C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 17:23:02 PAGE 2   
+
+  55   1        pwm_start();
+  56   1          while(1){
+  57   2          }
+  58   1      }
+C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 17:23:02 PAGE 3   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION timer1_inicializa (BEGIN)
+                                           ; SOURCE LINE # 7
+                                           ; SOURCE LINE # 8
+0000 C28E              CLR     TR1
+                                           ; SOURCE LINE # 9
+0002 E589              MOV     A,TMOD
+0004 540F              ANL     A,#0FH
+0006 4420              ORL     A,#020H
+0008 F589              MOV     TMOD,A
+                                           ; SOURCE LINE # 10
+000A 758DCC            MOV     TH1,#0CCH
+                                           ; SOURCE LINE # 11
+000D D28E              SETB    TR1
+                                           ; SOURCE LINE # 12
+000F 22                RET     
+             ; FUNCTION timer1_inicializa (END)
+
+             ; FUNCTION serial1_inicializa (BEGIN)
+                                           ; SOURCE LINE # 14
+                                           ; SOURCE LINE # 15
+0000 C29F              CLR     SM0
+                                           ; SOURCE LINE # 16
+0002 D29E              SETB    SM1
+                                           ; SOURCE LINE # 17
+0004 D2AF              SETB    EAL
+                                           ; SOURCE LINE # 18
+0006 D2AC              SETB    ES0
+                                           ; SOURCE LINE # 19
+0008 E598              MOV     A,S0CON
+000A 540F              ANL     A,#0FH
+000C 4470              ORL     A,#070H
+000E F598              MOV     S0CON,A
+                                           ; SOURCE LINE # 20
+0010 E587              MOV     A,PCON
+0012 547F              ANL     A,#07FH
+0014 4480              ORL     A,#080H
+0016 F587              MOV     PCON,A
+                                           ; SOURCE LINE # 21
+0018 D29C              SETB    REN0
+                                           ; SOURCE LINE # 22
+001A 22                RET     
+             ; FUNCTION serial1_inicializa (END)
+
+             ; FUNCTION serial_isr (BEGIN)
+0000 C0E0              PUSH    ACC
+0002 C0D0              PUSH    PSW
+0004 75D010            MOV     PSW,#010H
+                                           ; SOURCE LINE # 24
+                                           ; SOURCE LINE # 26
+0007 30985B            JNB     RI0,?C0005
+                                           ; SOURCE LINE # 27
+000A C298              CLR     RI0
+                                           ; SOURCE LINE # 28
+000C AF99              MOV     R7,S0BUF
+000E D3                SETB    C
+000F EF                MOV     A,R7
+0010 942F              SUBB    A,#02FH
+0012 7480              MOV     A,#080H
+0014 9480              SUBB    A,#080H
+C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 17:23:02 PAGE 4   
+
+0016 404D              JC      ?C0005
+0018 AF99              MOV     R7,S0BUF
+001A EF                MOV     A,R7
+001B 943A              SUBB    A,#03AH
+001D 7480              MOV     A,#080H
+001F 9480              SUBB    A,#080H
+0021 5042              JNC     ?C0005
+                                           ; SOURCE LINE # 29
+0023 AF99              MOV     R7,S0BUF
+0025 EF                MOV     A,R7
+0026 24D0              ADD     A,#0D0H
+0028 F500        R     MOV     prop+01H,A
+002A E4                CLR     A
+002B 34FF              ADDC    A,#0FFH
+002D F500        R     MOV     prop,A
+                                           ; SOURCE LINE # 31
+002F 6300FF      R     XRL     prop+01H,#0FFH
+0032 6300FF      R     XRL     prop,#0FFH
+                                           ; SOURCE LINE # 32
+0035 8500D3      R     MOV     CM0+01H,prop
+0038 8500D2      R     MOV     CM0,prop+01H
+                                           ; SOURCE LINE # 33
+003B 8500D5      R     MOV     CM1+01H,prop
+003E 8500D4      R     MOV     CM1,prop+01H
+                                           ; SOURCE LINE # 34
+0041 8500D7      R     MOV     CM2+01H,prop
+0044 8500D6      R     MOV     CM2,prop+01H
+                                           ; SOURCE LINE # 35
+0047 8500E3      R     MOV     CM3+01H,prop
+004A 8500E2      R     MOV     CM3,prop+01H
+                                           ; SOURCE LINE # 36
+004D 8500E5      R     MOV     CM4+01H,prop
+0050 8500E4      R     MOV     CM4,prop+01H
+                                           ; SOURCE LINE # 37
+0053 8500E7      R     MOV     CM5+01H,prop
+0056 8500E6      R     MOV     CM5,prop+01H
+                                           ; SOURCE LINE # 38
+0059 8500F3      R     MOV     CM6+01H,prop
+005C 8500F2      R     MOV     CM6,prop+01H
+                                           ; SOURCE LINE # 39
+005F 8500F5      R     MOV     CM7+01H,prop
+0062 8500F4      R     MOV     CM7,prop+01H
+                                           ; SOURCE LINE # 40
+                                           ; SOURCE LINE # 41
+                                           ; SOURCE LINE # 42
+0065         ?C0005:
+0065 D0D0              POP     PSW
+0067 D0E0              POP     ACC
+0069 32                RETI    
+             ; FUNCTION serial_isr (END)
+
+             ; FUNCTION pwm_start (BEGIN)
+                                           ; SOURCE LINE # 44
+                                           ; SOURCE LINE # 45
+0000 75F7FF            MOV     CMSEL,#0FFH
+                                           ; SOURCE LINE # 46
+0003 75F6FF            MOV     CMEN,#0FFH
+                                           ; SOURCE LINE # 47
+0006 75DEFF            MOV     CTRELL,#0FFH
+                                           ; SOURCE LINE # 48
+0009 75DFFF            MOV     CTRELH,#0FFH
+                                           ; SOURCE LINE # 49
+C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 17:23:02 PAGE 5   
+
+000C 53E1F8            ANL     CTCON,#0F8H
+                                           ; SOURCE LINE # 50
+000F 22                RET     
+             ; FUNCTION pwm_start (END)
+
+             ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 52
+                                           ; SOURCE LINE # 53
+0000 120000      R     LCALL   timer1_inicializa
+                                           ; SOURCE LINE # 54
+0003 120000      R     LCALL   serial1_inicializa
+                                           ; SOURCE LINE # 55
+0006 120000      R     LCALL   pwm_start
+0009         ?C0007:
+                                           ; SOURCE LINE # 56
+                                           ; SOURCE LINE # 57
+0009 80FE              SJMP    ?C0007
+             ; FUNCTION main (END)
+
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    176    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

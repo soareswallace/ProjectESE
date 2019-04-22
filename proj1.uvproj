@@ -13,14 +13,14 @@
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
-          <Device>80C51FA</Device>
-          <Vendor>Intel</Vendor>
-          <Cpu>IRAM(0-0xFF) CLOCK(20000000)</Cpu>
+          <Device>SAB 80C517A</Device>
+          <Vendor>Infineon</Vendor>
+          <Cpu>IRAM(0-0xFF) CLOCK(18000000) MOD517DP MOD517AU XRAM(0xF800-0xFFFF)</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
-          <DeviceId>3040</DeviceId>
-          <RegisterFile>REG51F.H</RegisterFile>
+          <DeviceId>2969</DeviceId>
+          <RegisterFile>REG517A.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
           <Asm></Asm>
@@ -36,8 +36,8 @@
           <BinPath></BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath>Intel\</RegisterFilePath>
-          <DBRegisterFilePath>Intel\</DBRegisterFilePath>
+          <RegisterFilePath>Infineon\</RegisterFilePath>
+          <DBRegisterFilePath>Infineon\</DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -109,12 +109,12 @@
         <DllOption>
           <SimDllName>S8051.DLL</SimDllName>
           <SimDllArguments></SimDllArguments>
-          <SimDlgDll>DP51.DLL</SimDlgDll>
-          <SimDlgDllArguments>-p51R</SimDlgDllArguments>
+          <SimDlgDll>D500.DLL</SimDlgDll>
+          <SimDlgDllArguments>-p517A</SimDlgDllArguments>
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
-          <TargetDlgDll>TP51.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-p51R</TargetDlgDllArguments>
+          <TargetDlgDll>T500.DLL</TargetDlgDll>
+          <TargetDlgDllArguments>-p517A</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -125,7 +125,7 @@
             <Oh166RecLen>16</Oh166RecLen>
           </OPTHX>
           <Simulator>
-            <UseSimulator>1</UseSimulator>
+            <UseSimulator>0</UseSimulator>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
             <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
@@ -137,9 +137,9 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Simulator>
           <Target>
-            <UseTarget>0</UseTarget>
+            <UseTarget>1</UseTarget>
             <LoadApplicationAtStartup>1</LoadApplicationAtStartup>
-            <RunToMain>0</RunToMain>
+            <RunToMain>1</RunToMain>
             <RestoreBreakpoints>1</RestoreBreakpoints>
             <RestoreWatchpoints>1</RestoreWatchpoints>
             <RestoreMemoryDisplay>1</RestoreMemoryDisplay>
@@ -149,7 +149,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>-1</TargetSelection>
+          <TargetSelection>0</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -163,7 +163,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver></Driver>
+            <Driver>BIN\MON51.DLL</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -196,13 +196,13 @@
             <UseMultipleDPTR>0</UseMultipleDPTR>
             <UseOnchipXram>0</UseOnchipXram>
             <HadIRAM>1</HadIRAM>
-            <HadXRAM>0</HadXRAM>
+            <HadXRAM>1</HadXRAM>
             <HadIROM>0</HadIROM>
             <Moda2>0</Moda2>
             <Moddp2>0</Moddp2>
             <Modp2>0</Modp2>
-            <Mod517dp>0</Mod517dp>
-            <Mod517au>0</Mod517au>
+            <Mod517dp>1</Mod517dp>
+            <Mod517au>1</Mod517au>
             <Mode2>0</Mode2>
             <useCB>0</useCB>
             <useXB>0</useXB>
@@ -282,8 +282,8 @@
               </IRA>
               <XRA>
                 <Type>0</Type>
-                <StartAddress>0x0</StartAddress>
-                <Size>0x0</Size>
+                <StartAddress>0xf800</StartAddress>
+                <Size>0x800</Size>
               </XRA>
               <XRA512>
                 <Type>0</Type>

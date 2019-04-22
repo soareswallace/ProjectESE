@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    04/01/2019  19:35:49  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    04/22/2019  17:23:02  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
@@ -23,55 +23,43 @@ LINK MAP OF MODULE:  .\Objects\proj1 (?C_STARTUP)
 
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
-            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            DATA    0008H     0002H     UNIT         ?DT?PROJ5
                     000AH     0006H                  *** GAP ***
             REG     0010H     0008H     ABSOLUTE     "REG BANK 2"
-            DATA    0018H     0032H     UNIT         ?DT?PROJ5
-            IDATA   004AH     0001H     UNIT         ?STACK
+            IDATA   0018H     0001H     UNIT         ?STACK
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
                     0003H     0020H                  *** GAP ***
             CODE    0023H     0003H     ABSOLUTE     
                     0026H     07DAH                  *** GAP ***
-            CODE    0800H     00E9H     UNIT         ?PR?SERIAL_ISR?PROJ5
-            CODE    08E9H     008CH     UNIT         ?C_C51STARTUP
-            CODE    0975H     008CH     UNIT         ?PR?_SENDCHAR?PROJ5
-            CODE    0A01H     0041H     UNIT         ?PR?RECEIVECHAR?PROJ5
-            CODE    0A42H     0019H     UNIT         ?C_INITSEG
-            CODE    0A5BH     0013H     UNIT         ?PR?SERIAL1_INICIALIZA?PROJ5
-            CODE    0A6EH     0013H     UNIT         ?PR?RXBUFFERRECVAZIO?PROJ5
-            CODE    0A81H     0013H     UNIT         ?PR?TXBUFFERTRANSVAZIO?PROJ5
-            CODE    0A94H     0011H     UNIT         ?PR?MAIN?PROJ5
-            CODE    0AA5H     0010H     UNIT         ?PR?TIMER1_INICIALIZA?PROJ5
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     006AH     UNIT         ?PR?SERIAL_ISR?PROJ5
+            CODE    08F6H     001BH     UNIT         ?PR?SERIAL1_INICIALIZA?PROJ5
+            CODE    0911H     0010H     UNIT         ?PR?TIMER1_INICIALIZA?PROJ5
+            CODE    0921H     0010H     UNIT         ?PR?PWM_START?PROJ5
+            CODE    0931H     000BH     UNIT         ?PR?MAIN?PROJ5
+            CODE    093CH     0005H     UNIT         ?C_INITSEG
 
 
 
 OVERLAY MAP OF MODULE:   .\Objects\proj1 (?C_STARTUP)
 
 
-SEGMENT                                DATA_GROUP 
-  +--> CALLED SEGMENT                START    LENGTH
-----------------------------------------------------
-?C_C51STARTUP                        -----    -----
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
   +--> ?PR?MAIN?PROJ5
   +--> ?C_INITSEG
 
-?PR?MAIN?PROJ5                       0008H    0001H
+?PR?MAIN?PROJ5
   +--> ?PR?TIMER1_INICIALIZA?PROJ5
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/01/2019  19:35:49  PAGE 2
-
-
   +--> ?PR?SERIAL1_INICIALIZA?PROJ5
-  +--> ?PR?_SENDCHAR?PROJ5
+  +--> ?PR?PWM_START?PROJ5
 
-?PR?_SENDCHAR?PROJ5                  0009H    0001H
-  +--> ?PR?TXBUFFERTRANSVAZIO?PROJ5
 
-*** NEW ROOT ***************************************************
-
-?PR?SERIAL_ISR?PROJ5                 -----    -----
-  +--> ?PR?RXBUFFERRECVAZIO?PROJ5
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/22/2019  17:23:02  PAGE 2
 
 
 
@@ -81,8 +69,8 @@ SYMBOL TABLE OF MODULE:  .\Objects\proj1 (?C_STARTUP)
   ----------------------------------
 
   -------         MODULE        ?C_STARTUP
-  C:08E9H         SEGMENT       ?C_C51STARTUP
-  I:004AH         SEGMENT       ?STACK
+  C:0800H         SEGMENT       ?C_C51STARTUP
+  I:0018H         SEGMENT       ?STACK
   C:0000H         PUBLIC        ?C_STARTUP
   D:00E0H         SYMBOL        ACC
   D:00F0H         SYMBOL        B
@@ -91,7 +79,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\proj1 (?C_STARTUP)
   N:0000H         SYMBOL        IBPSTACK
   N:0100H         SYMBOL        IBPSTACKTOP
   N:0080H         SYMBOL        IDATALEN
-  C:08ECH         SYMBOL        IDATALOOP
+  C:0803H         SYMBOL        IDATALOOP
   N:0000H         SYMBOL        PBPSTACK
   N:0100H         SYMBOL        PBPSTACKTOP
   N:0000H         SYMBOL        PDATALEN
@@ -100,202 +88,119 @@ SYMBOL TABLE OF MODULE:  .\Objects\proj1 (?C_STARTUP)
   N:0000H         SYMBOL        PPAGEENABLE
   D:00A0H         SYMBOL        PPAGE_SFR
   D:0081H         SYMBOL        SP
-  C:08E9H         SYMBOL        STARTUP1
+  C:0800H         SYMBOL        STARTUP1
   N:0000H         SYMBOL        XBPSTACK
   N:0000H         SYMBOL        XBPSTACKTOP
   N:0000H         SYMBOL        XDATALEN
   N:0000H         SYMBOL        XDATASTART
   C:0000H         LINE#         126
-  C:08E9H         LINE#         133
-  C:08EBH         LINE#         134
-  C:08ECH         LINE#         135
-  C:08EDH         LINE#         136
-  C:08EFH         LINE#         185
-  C:08F2H         LINE#         196
+  C:0800H         LINE#         133
+  C:0802H         LINE#         134
+  C:0803H         LINE#         135
+  C:0804H         LINE#         136
+  C:0806H         LINE#         185
+  C:0809H         LINE#         196
   -------         ENDMOD        ?C_STARTUP
 
   -------         MODULE        PROJ5
   C:0000H         SYMBOL        _ICE_DUMMY_
-  D:0018H         PUBLIC        IN_TRANS
-  B:00A8H.7       PUBLIC        EA
-  B:00A8H.4       PUBLIC        ES
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/01/2019  19:35:49  PAGE 3
-
-
-  D:001AH         PUBLIC        TX_OCUPADO
-  B:0098H.0       PUBLIC        RI
-  B:0098H.1       PUBLIC        TI
-  D:001CH         PUBLIC        buffer_circular_recept
-  C:0A94H         PUBLIC        main
-  C:0975H         PUBLIC        _sendChar
-  D:0099H         PUBLIC        SBUF
+  B:0098H.4       PUBLIC        REN0
+  D:00F6H         PUBLIC        CMEN
+  C:0931H         PUBLIC        main
   D:0087H         PUBLIC        PCON
-  D:002CH         PUBLIC        buffer_circular_transm
-  C:0800H         PUBLIC        serial_isr
-  D:003CH         PUBLIC        OUT_REC
-  D:0098H         PUBLIC        SCON
+  C:088CH         PUBLIC        serial_isr
   D:0089H         PUBLIC        TMOD
-  D:003EH         PUBLIC        readThis
-  C:0A5BH         PUBLIC        serial1_inicializa
-  C:0A81H         PUBLIC        TxBufferTransVazio
+  C:08F6H         PUBLIC        serial1_inicializa
+  D:00D2H         PUBLIC        CM0
+  D:00D4H         PUBLIC        CM1
+  D:00D6H         PUBLIC        CM2
+  D:0008H         PUBLIC        prop
+  D:00E2H         PUBLIC        CM3
+  D:00E4H         PUBLIC        CM4
+  D:00DFH         PUBLIC        CTRELH
+  D:00E6H         PUBLIC        CM5
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/22/2019  17:23:02  PAGE 3
+
+
+  D:00F2H         PUBLIC        CM6
+  D:00F4H         PUBLIC        CM7
+  B:00A8H.4       PUBLIC        ES0
+  D:00DEH         PUBLIC        CTRELL
+  B:0098H.0       PUBLIC        RI0
   D:008DH         PUBLIC        TH1
-  C:0A6EH         PUBLIC        RxBufferRecVazio
-  D:0040H         PUBLIC        IN_REC
+  B:0098H.7       PUBLIC        SM0
+  B:0098H.6       PUBLIC        SM1
+  B:00A8H.7       PUBLIC        EAL
   B:0088H.6       PUBLIC        TR1
-  D:0042H         PUBLIC        incoming
-  C:0AA5H         PUBLIC        timer1_inicializa
-  D:0044H         PUBLIC        OUT_TRANS
-  B:0098H.4       PUBLIC        REN
-  C:0A01H         PUBLIC        receiveChar
-  D:0046H         PUBLIC        i
-  D:0048H         PUBLIC        j
-  -------         PROC          MAIN
-  -------         DO            
-  D:0008H         SYMBOL        c
-  -------         ENDDO         
-  C:0A94H         LINE#         43
-  C:0A94H         LINE#         44
-  C:0A97H         LINE#         45
-  C:0A9AH         LINE#         46
-  C:0A9CH         LINE#         47
-  C:0A9EH         LINE#         49
-  C:0A9EH         LINE#         52
-  C:0AA3H         LINE#         53
-  -------         ENDPROC       MAIN
+  C:0911H         PUBLIC        timer1_inicializa
+  D:0099H         PUBLIC        S0BUF
+  D:0098H         PUBLIC        S0CON
+  C:0921H         PUBLIC        pwm_start
+  D:00F7H         PUBLIC        CMSEL
+  D:00E1H         PUBLIC        CTCON
   -------         PROC          TIMER1_INICIALIZA
-  C:0AA5H         LINE#         56
-  C:0AA5H         LINE#         57
-  C:0AA7H         LINE#         58
-  C:0AAFH         LINE#         59
-  C:0AB2H         LINE#         60
-  C:0AB4H         LINE#         61
+  C:0911H         LINE#         7
+  C:0911H         LINE#         8
+  C:0913H         LINE#         9
+  C:091BH         LINE#         10
+  C:091EH         LINE#         11
+  C:0920H         LINE#         12
   -------         ENDPROC       TIMER1_INICIALIZA
   -------         PROC          SERIAL1_INICIALIZA
-  C:0A5BH         LINE#         63
-  C:0A5BH         LINE#         64
-  C:0A63H         LINE#         65
-  C:0A6BH         LINE#         66
-  C:0A6DH         LINE#         67
+  C:08F6H         LINE#         14
+  C:08F6H         LINE#         15
+  C:08F8H         LINE#         16
+  C:08FAH         LINE#         17
+  C:08FCH         LINE#         18
+  C:08FEH         LINE#         19
+  C:0906H         LINE#         20
+  C:090EH         LINE#         21
+  C:0910H         LINE#         22
   -------         ENDPROC       SERIAL1_INICIALIZA
   -------         PROC          SERIAL_ISR
-  C:0800H         LINE#         69
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/01/2019  19:35:49  PAGE 4
-
-
-  C:080DH         LINE#         70
-  C:0810H         LINE#         71
-  C:0812H         LINE#         72
-  C:081EH         LINE#         73
-  C:0826H         LINE#         74
-  C:0835H         LINE#         75
-  C:0839H         LINE#         76
-  C:0841H         LINE#         77
-  C:0845H         LINE#         78
-  C:0845H         LINE#         79
-  C:0847H         LINE#         80
-  C:0847H         LINE#         81
-  C:084FH         LINE#         82
-  C:084FH         LINE#         83
-  C:084FH         LINE#         84
-  C:0855H         LINE#         85
-  C:0855H         LINE#         86
-  C:085BH         LINE#         87
-  C:085DH         LINE#         88
-  C:0863H         LINE#         89
-  C:086AH         LINE#         90
-  C:0875H         LINE#         91
-  C:087DH         LINE#         92
-  C:087FH         LINE#         93
-  C:089DH         LINE#         94
-  C:08B0H         LINE#         95
-  C:08B6H         LINE#         96
-  C:08C1H         LINE#         97
-  C:08C9H         LINE#         98
-  C:08CBH         LINE#         99
-  C:08CBH         LINE#         100
-  C:08D6H         LINE#         101
-  C:08DEH         LINE#         102
-  C:08DEH         LINE#         104
-  C:08DEH         LINE#         105
-  C:08DEH         LINE#         106
+  C:088CH         LINE#         24
+  C:0893H         LINE#         26
+  C:0896H         LINE#         27
+  C:0898H         LINE#         28
+  C:08AFH         LINE#         29
+  C:08BBH         LINE#         31
+  C:08C1H         LINE#         32
+  C:08C7H         LINE#         33
+  C:08CDH         LINE#         34
+  C:08D3H         LINE#         35
+  C:08D9H         LINE#         36
+  C:08DFH         LINE#         37
+  C:08E5H         LINE#         38
+  C:08EBH         LINE#         39
+  C:08F1H         LINE#         40
+  C:08F1H         LINE#         41
+  C:08F1H         LINE#         42
   -------         ENDPROC       SERIAL_ISR
-  -------         PROC          _SENDCHAR
-  D:0009H         SYMBOL        c
-  C:0975H         LINE#         109
-  C:0977H         LINE#         110
-  C:0980H         LINE#         111
-  C:0985H         LINE#         112
-  C:098CH         LINE#         113
-  C:0993H         LINE#         114
-  C:099BH         LINE#         115
-  C:099DH         LINE#         116
-  C:09BBH         LINE#         117
-  C:09C2H         LINE#         118
-  C:09CAH         LINE#         119
-  C:09CCH         LINE#         120
-  C:09DFH         LINE#         121
-  C:09E4H         LINE#         122
-  C:09EBH         LINE#         123
-  C:09F3H         LINE#         124
-  C:09F3H         LINE#         126
-  C:09F9H         LINE#         127
-BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/01/2019  19:35:49  PAGE 5
+  -------         PROC          PWM_START
+  C:0921H         LINE#         44
+  C:0921H         LINE#         45
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  04/22/2019  17:23:02  PAGE 4
 
 
-  C:09FEH         LINE#         128
-  C:0A00H         LINE#         129
-  C:0A00H         LINE#         130
-  C:0A00H         LINE#         131
-  -------         ENDPROC       _SENDCHAR
-  -------         PROC          RECEIVECHAR
-  -------         DO            
-  D:0007H         SYMBOL        c
-  -------         ENDDO         
-  C:0A01H         LINE#         133
-  C:0A01H         LINE#         135
-  C:0A07H         LINE#         136
-  C:0A13H         LINE#         137
-  C:0A19H         LINE#         138
-  C:0A1EH         LINE#         139
-  C:0A25H         LINE#         140
-  C:0A34H         LINE#         141
-  C:0A38H         LINE#         142
-  C:0A39H         LINE#         143
-  C:0A39H         LINE#         144
-  C:0A41H         LINE#         145
-  C:0A41H         LINE#         146
-  C:0A41H         LINE#         147
-  C:0A41H         LINE#         148
-  C:0A41H         LINE#         149
-  -------         ENDPROC       RECEIVECHAR
-  -------         PROC          RXBUFFERRECVAZIO
-  C:0A6EH         LINE#         151
-  C:0A6EH         LINE#         152
-  C:0A78H         LINE#         153
-  C:0A7DH         LINE#         154
-  C:0A7DH         LINE#         155
-  C:0A7DH         LINE#         156
-  C:0A80H         LINE#         157
-  C:0A80H         LINE#         158
-  -------         ENDPROC       RXBUFFERRECVAZIO
-  -------         PROC          TXBUFFERTRANSVAZIO
-  C:0A81H         LINE#         160
-  C:0A81H         LINE#         161
-  C:0A8BH         LINE#         162
-  C:0A90H         LINE#         163
-  C:0A90H         LINE#         164
-  C:0A90H         LINE#         165
-  C:0A93H         LINE#         166
-  C:0A93H         LINE#         167
-  -------         ENDPROC       TXBUFFERTRANSVAZIO
+  C:0924H         LINE#         46
+  C:0927H         LINE#         47
+  C:092AH         LINE#         48
+  C:092DH         LINE#         49
+  C:0930H         LINE#         50
+  -------         ENDPROC       PWM_START
+  -------         PROC          MAIN
+  C:0931H         LINE#         52
+  C:0931H         LINE#         53
+  C:0934H         LINE#         54
+  C:0937H         LINE#         55
+  C:093AH         LINE#         56
+  C:093AH         LINE#         57
+  -------         ENDPROC       MAIN
   -------         ENDMOD        PROJ5
 
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?RECEIVECHAR?PROJ5
-
 ******************************************************************************
-* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 023AH BYTE (27%) *
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 00C6H BYTE ( 9%) *
 ******************************************************************************
 
-Program Size: data=69.0 xdata=0 code=699
-LINK/LOCATE RUN COMPLETE.  1 WARNING(S),  0 ERROR(S)
+Program Size: data=19.0 xdata=0 code=327
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
