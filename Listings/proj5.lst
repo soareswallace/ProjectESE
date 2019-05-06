@@ -1,4 +1,4 @@
-C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 18:05:02 PAGE 1   
+C51 COMPILER V9.59.0.0   PROJ5                                                             05/06/2019 15:03:38 PAGE 1   
 
 
 C51 COMPILER V9.59.0.0, COMPILATION OF MODULE PROJ5
@@ -39,12 +39,12 @@ line level    source
   29   3            light = S0BUF - 48;
   30   3            CMH0 = 0xFF - 25*light;
   31   3            CMH1 = 0xFF - 25*light; //25 eh porque eu dividi minha luminosidade em 10 niveis
-  32   3            CMH2 = 0xFF - 25*light; //0 seria o nivel maximo, pois eu nao vou diminuir a luminosidade de forma algu
+  32   3            CMH2 = 0xFF - 25*light; //9 seria o nivel maximo, pois eu nao vou diminuir a luminosidade de forma algu
              -ma
-  33   3            CMH3 = 0xFF - 25*light; //9 seria a luminosidade minima, pois ai eu diminuo ao nivel maximo a luminosid
+  33   3            CMH3 = 0xFF - 25*light; //0 seria a luminosidade minima, pois ai eu diminuo ao nivel maximo a luminosid
              -ade
-  34   3            CMH4 = 0xFF - 25*light; //255 luz maxima
-  35   3            CMH5 = 0xFF - 25*light; // 255 - 25 * 9(que vem do input) luminosidade minima
+  34   3            CMH4 = 0xFF - 25*light; //0 luz maxima
+  35   3            CMH5 = 0xFF - 25*light; // 255 - 25 * 9(que vem do input) luminosidade maxima
   36   3            CMH6 = 0xFF - 25*light;
   37   3            CMH7 = 0xFF - 25*light;
   38   3            
@@ -56,29 +56,28 @@ line level    source
   44   3            CML5 = 0xFF - 25*light;
   45   3            CML6 = 0xFF - 25*light;
   46   3            CML7 = 0xFF - 25*light;
-  47   3            
-  48   3          }
-  49   2        }
-  50   1      }
-  51          
-  52          void pwm_start() {
-C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 18:05:02 PAGE 2   
+  47   3          }
+  48   2        }
+  49   1      }
+  50          
+  51          void pwm_start() {
+  52   1        CMSEL = (CMSEL | 0xFF);
+C51 COMPILER V9.59.0.0   PROJ5                                                             05/06/2019 15:03:38 PAGE 2   
 
-  53   1        CMSEL = (CMSEL | 0xFF);
-  54   1        CMEN = (CMEN | 0xFF);
-  55   1        CTRELL = 0xFF;
-  56   1        CTRELH = 0xFF;
-  57   1        CTCON = (CTCON & 0xF8);
-  58   1      }
-  59          
-  60          void main() { 
-  61   1        timer1_inicializa();
-  62   1        serial1_inicializa();
-  63   1        pwm_start();
-  64   1          while(1){
-  65   2          }
-  66   1      }
-C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 18:05:02 PAGE 3   
+  53   1        CMEN = (CMEN | 0xFF);
+  54   1        CTRELL = 0xFF;
+  55   1        CTRELH = 0xFF;
+  56   1        CTCON = (CTCON & 0xF8);
+  57   1      }
+  58          
+  59          void main() { 
+  60   1        timer1_inicializa();
+  61   1        serial1_inicializa();
+  62   1        pwm_start();
+  63   1          while(1){
+  64   2          }
+  65   1      }
+C51 COMPILER V9.59.0.0   PROJ5                                                             05/06/2019 15:03:38 PAGE 3   
 
 ASSEMBLY LISTING OF GENERATED OBJECT CODE
 
@@ -142,7 +141,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0013 D3                SETB    C
 0014 EF                MOV     A,R7
 0015 942F              SUBB    A,#02FH
-C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 18:05:02 PAGE 4   
+C51 COMPILER V9.59.0.0   PROJ5                                                             05/06/2019 15:03:38 PAGE 4   
 
 0017 7480              MOV     A,#080H
 0019 9480              SUBB    A,#080H
@@ -206,7 +205,7 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 0069 FE                MOV     R6,A
 006A C3                CLR     C
 006B 74FF              MOV     A,#0FFH
-C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 18:05:02 PAGE 5   
+C51 COMPILER V9.59.0.0   PROJ5                                                             05/06/2019 15:03:38 PAGE 5   
 
 006D 9E                SUBB    A,R6
 006E F5D2              MOV     CML0,A
@@ -237,9 +236,9 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
 008C F5F2              MOV     CML6,A
                                            ; SOURCE LINE # 46
 008E F5F4              MOV     CML7,A
+                                           ; SOURCE LINE # 47
                                            ; SOURCE LINE # 48
                                            ; SOURCE LINE # 49
-                                           ; SOURCE LINE # 50
 0090         ?C0005:
 0090 D0D0              POP     PSW
 0092 D0F0              POP     B
@@ -248,34 +247,34 @@ ASSEMBLY LISTING OF GENERATED OBJECT CODE
              ; FUNCTION serial_isr (END)
 
              ; FUNCTION pwm_start (BEGIN)
+                                           ; SOURCE LINE # 51
                                            ; SOURCE LINE # 52
-                                           ; SOURCE LINE # 53
 0000 75F7FF            MOV     CMSEL,#0FFH
-                                           ; SOURCE LINE # 54
+                                           ; SOURCE LINE # 53
 0003 75F6FF            MOV     CMEN,#0FFH
-                                           ; SOURCE LINE # 55
+                                           ; SOURCE LINE # 54
 0006 75DEFF            MOV     CTRELL,#0FFH
-                                           ; SOURCE LINE # 56
+                                           ; SOURCE LINE # 55
 0009 75DFFF            MOV     CTRELH,#0FFH
-                                           ; SOURCE LINE # 57
+                                           ; SOURCE LINE # 56
 000C 53E1F8            ANL     CTCON,#0F8H
-                                           ; SOURCE LINE # 58
+                                           ; SOURCE LINE # 57
 000F 22                RET     
              ; FUNCTION pwm_start (END)
 
              ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 59
                                            ; SOURCE LINE # 60
-                                           ; SOURCE LINE # 61
 0000 120000      R     LCALL   timer1_inicializa
-                                           ; SOURCE LINE # 62
+                                           ; SOURCE LINE # 61
 0003 120000      R     LCALL   serial1_inicializa
-                                           ; SOURCE LINE # 63
-C51 COMPILER V9.59.0.0   PROJ5                                                             04/22/2019 18:05:02 PAGE 6   
+                                           ; SOURCE LINE # 62
+C51 COMPILER V9.59.0.0   PROJ5                                                             05/06/2019 15:03:38 PAGE 6   
 
 0006 120000      R     LCALL   pwm_start
 0009         ?C0007:
+                                           ; SOURCE LINE # 63
                                            ; SOURCE LINE # 64
-                                           ; SOURCE LINE # 65
 0009 80FE              SJMP    ?C0007
              ; FUNCTION main (END)
 
