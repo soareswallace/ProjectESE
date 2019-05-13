@@ -16,67 +16,63 @@ sbit C1 = P1^5;
 sbit C2 = P1^6;
 sbit C3 = P1^7;
 
-unsigned char bitver = 1;
-unsigned char v;
-
-void timer0_int (void) interrupt 1 using 2{ // dispositivo associado é 1 (timer0) no vetor de interrupção
-	TR0 = 0;							// Desliga Timer0
-	TH0 += VALOR_TH0;			// Programa contagem do Timer0 (já considera possíveis alterações)
-	TL0 += VALOR_TL0;
-	TR0 = 1;							// Habilita contagem do timer 0
+void timer0_int (void) interrupt 1 using 2{ // dispositivo associado é 1 (timer0) no vetor de interrupção	
 	
-	
-	if ((bitver & 0x0F) == 0) {
-		bitver = 1; // resetar o bit pro valor inicial
-	}
-	
-	bitver = bitver << 1;
-	
-	if(C1 == 0){
-		while(R1 == 0){
-			return '1';
+	if (R1 == 0) {
+		if (C1 == 0) {
+			S0BUF = '1';
 		}
-		while(R2 == 0){
-			return '4';
+		
+		if (C2 == 0) {
+			S0BUF = '2';
 		}
-		while(R3==0){
-			return '7';
-		}
-		while(R4==0){
-			return '*';
+		
+		if (C3 == 0) {
+			S0BUF = '3';
 		}
 	}
 	
-	if(C2 == 0){
-		while(R1 == 0){
-			return '2';
+	if (R2 == 0) {
+		if (C1 == 0) {
+			S0BUF = '4';
 		}
-		while(R2 == 0){
-			return '5';
+		
+		if (C2 == 0) {
+			S0BUF = '5';
 		}
-		while(R3==0){
-			return '8';
-		}
-		while(R4==0){
-			return '0';
-		}
-	}
-	
-	if(C3 == 0){
-		while(R1 == 0){
-			return '3';
-		}
-		while(R2 == 0){
-			return '6';
-		}
-		while(R3==0){
-			return '9';
-		}
-		while(R4==0){
-			return '#';
+		
+		if (C3 == 0) {
+			S0BUF = '6';
 		}
 	}
 	
+	if (R3 == 0) {
+		if (C1 == 0) {
+			S0BUF = '7';
+		}
+		
+		if (C2 == 0) {
+			S0BUF = '8';
+		}
+		
+		if (C3 == 0) {
+			S0BUF = '9';
+		}
+	}
+	
+	if (R4 == 0) {
+		if (C1 == 0) {
+			S0BUF = '*';
+		}
+		
+		if (C2 == 0) {
+			S0BUF = '0';
+		}
+		
+		if (C3 == 0) {
+			S0BUF = '#';
+		}
+	}
 }
 
 void timer0_inicializa() {
@@ -89,9 +85,6 @@ void timer0_inicializa() {
 }
 
 void main(){
-	C1 = 0;
-	C2 = 0;
-	C3 = 0;
 	timer0_inicializa();
 	while(1){
 	}
